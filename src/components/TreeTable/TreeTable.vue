@@ -2,7 +2,7 @@
   <div class="wrapper">
     <el-table :data="tableData" class="tree-table" border>
       <el-table-column class-name="tree-cell" width="200">
-        <template #default="{ row }">
+        <template #default="{ row, $index }">
           <div class="row-indent">
             <div class="row-indent-unit" v-for="num in getLevel(row.key)" :key="num"
               :class="getIndentClass(row.key, num)"></div>
@@ -17,10 +17,14 @@
               </el-icon>
             </template>
           </div>
-          <div>{{ row.key }}</div>
+          <div>{{ 'Lorem, ipsum dolor.'.repeat($index % 4 + 1) }}</div>
         </template>
       </el-table-column>
-      <el-table-column prop="key" label="Key">
+      <el-table-column prop="key" label="Key"></el-table-column>
+      <el-table-column label="Content">
+        <template #default="{ $index }">
+          <div>{{ 'Lorem, ipsum dolor.'.repeat($index % 3 + 1) }}</div>
+        </template>
       </el-table-column>
       <el-table-column label="Level">
         <template #default="{ row }">
@@ -150,18 +154,14 @@ function getIndentClass(key: string, num: number) {
 }
 
 :deep(.tree-cell) {
+  // css hack
+  height: 1px;
 
   .cell {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
     display: flex;
-    padding: 8px 12px;
+    height: 100%;
     overflow: visible;
     align-items: flex-start;
-
   }
 }
 
