@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <el-table :data="tableData" class="tree-table" border>
-      <el-table-column class-name="tree-cell" width="300">
+      <el-table-column class-name="tree-cell" width="300" align="left">
         <template #default="{ row }">
           <div class="row-indent">
             <div class="row-indent-unit" v-for="num in getLevel(row.key)" :key="num"
@@ -151,7 +151,7 @@ function getIndentClass(key: string, num: number) {
   --tree-table-line-color: #999;
 }
 
-:deep(.tree-cell) {
+:deep(td.tree-cell) {
   // css hack
   height: 1px;
 
@@ -160,6 +160,18 @@ function getIndentClass(key: string, num: number) {
     height: 100%;
     overflow: visible;
     align-items: flex-start;
+  }
+
+  &.is-left .cell {
+    justify-content: flex-start;
+  }
+
+  &.is-center .cell {
+    justify-content: center;
+  }
+
+  &.is-right .cell {
+    justify-content: flex-end;
   }
 }
 
