@@ -1,8 +1,8 @@
 <template>
   <div class="wrapper">
     <el-table :data="tableData" class="tree-table" border>
-      <el-table-column class-name="tree-cell" width="200">
-        <template #default="{ row, $index }">
+      <el-table-column class-name="tree-cell" width="300">
+        <template #default="{ row }">
           <div class="row-indent">
             <div class="row-indent-unit" v-for="num in getLevel(row.key)" :key="num"
               :class="getIndentClass(row.key, num)"></div>
@@ -17,15 +17,10 @@
               </el-icon>
             </template>
           </div>
-          <div>{{ 'Lorem, ipsum dolor.'.repeat($index % 4 + 1) }}</div>
+          <div>{{ row.key }}</div>
         </template>
       </el-table-column>
       <el-table-column prop="key" label="Key"></el-table-column>
-      <el-table-column label="Content">
-        <template #default="{ $index }">
-          <div>{{ 'Lorem, ipsum dolor.'.repeat($index % 3 + 1) }}</div>
-        </template>
-      </el-table-column>
       <el-table-column label="Level">
         <template #default="{ row }">
           {{ getLevel(row.key) }}
@@ -134,10 +129,13 @@ function getSwitcherClass(key: string) {
 function getIndentClass(key: string, num: number) {
   const last = isLast(key)
   const level = getLevel(key)
+  const isLastIndent = num === level
+
+
 
   return {
-    last: last && num === level,
-    invisible: dataMetaMap.value[key].hideFirstIndentLine && num === 1,
+    last: last && isLastIndent,
+    invisible: !isLastIndent && isLast(dataMetaMap.value[key].ancestors[num])
   }
 }
 

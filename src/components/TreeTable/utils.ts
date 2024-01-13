@@ -12,7 +12,6 @@ export interface DataMeta {
   children: string[]
   ancestors: string[]
   descendants: string[]
-  hideFirstIndentLine: boolean
 }
 
 export type DataMetaMap = Record<string, DataMeta>
@@ -41,8 +40,7 @@ export const getDataMetaMap = (data: DataItem[]) => {
         visible: !!visible,
         ancestors,
         descendants: [],
-        children: children.map(item => item.key),
-        hideFirstIndentLine: false
+        children: children.map(item => item.key)
       }
 
       ancestors.forEach(ancestor => {
@@ -51,13 +49,6 @@ export const getDataMetaMap = (data: DataItem[]) => {
 
       if (children.length > 0) {
         walk(children, ancestors.concat(key))
-      }
-
-      // treeTble没有根节点，level=0的节点画线逻辑和内层子树不太一致，作为最后一个子节点的level=1的节点，其后代节点第一条竖线要隐藏
-      if (level === 1 && isLast) {
-        dataMetaMap[key].descendants.forEach(descendant => {
-          dataMetaMap[descendant].hideFirstIndentLine = true
-        })
       }
     })
   }
